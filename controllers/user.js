@@ -2,11 +2,11 @@ const { successHandle, errorHandle } = require('../service/handle');
 const User = require('../models/userModel');
 
 const users = {
-  async getUser(req, res) {
+  async getUser(req, res, next) {
     const allUsers = await User.find();
     successHandle(res, '取得成功', allUsers);
   },
-  async createdUsers(req, res) {
+  async createdUsers(req, res, next) {
     try {
       const data = req.body;
       if (data.email !== '') {
@@ -24,7 +24,7 @@ const users = {
       errorHandle(res, error.message);
     }
   },
-  async deleteAll(req, res) {
+  async deleteAll(req, res, next) {
     // 取出 req 的 Url，再判斷是否等於 '/users/'
     if (req.originalUrl == '/users/') {
       errorHandle(res, '刪除失敗，查無此 ID');
@@ -34,7 +34,7 @@ const users = {
       successHandle(res, '刪除成功', deleteAll);
     }
   },
-  async deleteSingle(req, res) {
+  async deleteSingle(req, res, next) {
     try {
       const id = req.params.id;
       const deleteSingle = await User.findByIdAndDelete(id);
@@ -48,7 +48,7 @@ const users = {
       errorHandle(res, error.message);
     }
   },
-  async updateUsers(req, res) {
+  async updateUsers(req, res, next) {
     try {
       const id = req.params.id;
       const data = req.body;

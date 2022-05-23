@@ -2,7 +2,7 @@ const { successHandle, errorHandle } = require('../service/handle');
 const Post = require('../models/postModel');
 
 const posts = {
-  async getPosts(req, res) {
+  async getPosts(req, res, next) {
     // asc 遞增 (由小到大，由舊到新): "createdAt" ; desc 遞減 (由大到小、由新到舊): "-createdAt"
     const timeSort = req.query.timeSort === "asc" ? "createdAt" : "-createdAt";
     // new RegExp() 將字串轉成正規表達式，例如: "cool" -> /cool/
@@ -13,7 +13,7 @@ const posts = {
     }).sort(timeSort);
     successHandle(res, '取得成功', allPosts);
   },
-  async createdPosts(req, res) {
+  async createdPosts(req, res, next) {
     try {
       const data = req.body;
       if (data.content !== '') {
@@ -31,7 +31,7 @@ const posts = {
       errorHandle(res, error.message);
     }
   },
-  async deleteAll(req, res) {
+  async deleteAll(req, res, next) {
     // 取出 req 的 Url，再判斷是否等於 '/api/posts/'
     if (req.originalUrl == '/api/posts/') {
       errorHandle(res, '刪除失敗，查無此 ID');
@@ -41,7 +41,7 @@ const posts = {
       successHandle(res, '刪除成功', deleteAll);
     }
   },
-  async deleteSingle(req, res) {
+  async deleteSingle(req, res, next) {
     try {
       const id = req.params.id;
       const deleteSingle = await Post.findByIdAndDelete(id);
@@ -55,7 +55,7 @@ const posts = {
       errorHandle(res, error.message);
     }
   },
-  async patchPosts(req, res) {
+  async patchPosts(req, res, next) {
     try {
       const id = req.params.id;
       const data = req.body;
