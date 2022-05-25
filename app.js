@@ -4,8 +4,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');   // 解決跨網域問題
 
-const { notFound } = require('./service/http');
-
 // router
 var indexRouter = require('./routes/index');
 var postsRouter = require('./routes/posts');
@@ -32,7 +30,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/api', postsRouter);
 app.use('/users', usersRouter);
-app.use(notFound);
+
+// 404 not found 
+app.use((req, res, next) => {
+  res.status(404).send({
+    "status": 'error',
+    "message": "無此網路路由"
+  });
+  res.end();
+  next();
+});
 
 // 未捕捉到的 catch 
 process.on('unhandledRejection', (reason, promise) => {

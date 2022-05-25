@@ -1,4 +1,5 @@
-const { successHandle, errorHandle } = require('../service/handle');
+const handleSuccess = require('../service/handleSuccess');
+const { errorHandle } = require('../service/handle');
 const Post = require('../models/postModel');
 
 const posts = {
@@ -11,7 +12,7 @@ const posts = {
       path: 'user',
       select: 'name photo'
     }).sort(timeSort);
-    successHandle(res, '取得成功', allPosts);
+    handleSuccess(res, '取得成功', allPosts);
   },
   async createdPosts(req, res, next) {
     try {
@@ -23,7 +24,7 @@ const posts = {
           type: data.type,
           content: data.content
         })
-        successHandle(res, '新增成功', newPost);
+        handleSuccess(res, '新增成功', newPost);
       } else {
         errorHandle(res, '欄位是空的，請填寫');
       }
@@ -38,7 +39,7 @@ const posts = {
     } else {
       await Post.deleteMany({});
       const deleteAll = await Post.find();
-      successHandle(res, '刪除成功', deleteAll);
+      handleSuccess(res, '刪除成功', deleteAll);
     }
   },
   async deleteSingle(req, res, next) {
@@ -47,7 +48,7 @@ const posts = {
       const deleteSingle = await Post.findByIdAndDelete(id);
       if (deleteSingle) {
         const post = await Post.find();
-        successHandle(res, '刪除成功', post);
+        handleSuccess(res, '刪除成功', post);
       } else {
         errorHandle(res, '刪除失敗，查無此 ID');
       }
@@ -79,7 +80,7 @@ const posts = {
         path: 'user',
         select: 'name photo'
       });
-      successHandle(res, '更新成功', post);
+      handleSuccess(res, '更新成功', post);
     } catch (error) {
       errorHandle(res, "欄位沒有正確，或沒有此 ID");
     }

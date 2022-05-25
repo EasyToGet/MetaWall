@@ -1,10 +1,11 @@
-const { successHandle, errorHandle } = require('../service/handle');
+const handleSuccess = require('../service/handleSuccess'); 
+const { errorHandle } = require('../service/handle');
 const User = require('../models/userModel');
 
 const users = {
   async getUser(req, res, next) {
     const allUsers = await User.find();
-    successHandle(res, '取得成功', allUsers);
+    handleSuccess(res, '取得成功', allUsers);
   },
   async createdUsers(req, res, next) {
     try {
@@ -16,7 +17,7 @@ const users = {
           password: data.password,
           photo: data.photo
         })
-        successHandle(res, '新增成功', newUsers);
+        handleSuccess(res, '新增成功', newUsers);
       } else {
         errorHandle(res, '欄位是空的，請填寫');
       }
@@ -31,7 +32,7 @@ const users = {
     } else {
       await User.deleteMany({});
       const deleteAll = await User.find();
-      successHandle(res, '刪除成功', deleteAll);
+      handleSuccess(res, '刪除成功', deleteAll);
     }
   },
   async deleteSingle(req, res, next) {
@@ -40,7 +41,7 @@ const users = {
       const deleteSingle = await User.findByIdAndDelete(id);
       if (deleteSingle) {
         const user = await User.find();
-        successHandle(res, '刪除成功', user);
+        handleSuccess(res, '刪除成功', user);
       } else {
         errorHandle(res, '刪除失敗，查無此 ID');
       }
@@ -69,7 +70,7 @@ const users = {
         return errorHandle(res, '更新失敗，查無此 ID');
       }
       const user = await User.find();
-      successHandle(res, '更新成功', user);
+      handleSuccess(res, '更新成功', user);
     } catch (error) {
       errorHandle(res, "欄位沒有正確，或沒有此 ID");
     }
