@@ -1,5 +1,5 @@
 const handleSuccess = require('../service/handleSuccess'); 
-const { errorHandle } = require('../service/handle');
+const appError = require('../service/appError');
 const User = require('../models/userModel');
 
 const users = {
@@ -19,16 +19,16 @@ const users = {
         })
         handleSuccess(res, '新增成功', newUsers);
       } else {
-        errorHandle(res, '欄位是空的，請填寫');
+        appError(400, 'content 欄位未填寫', next);
       }
     } catch (error) {
-      errorHandle(res, error.message);
+      appError(400, error.message, next);
     }
   },
   async deleteAll(req, res, next) {
-    // 取出 req 的 Url，再判斷是否等於 '/users/'
-    if (req.originalUrl == '/users/') {
-      errorHandle(res, '刪除失敗，查無此 ID');
+    // 取出 req 的 Url，再判斷是否等於 '/api/users/'
+    if (req.originalUrl == '/api/users/') {
+      appError(400, '刪除失敗，查無此 ID', next);
     } else {
       await User.deleteMany({});
       const deleteAll = await User.find();
@@ -43,10 +43,10 @@ const users = {
         const user = await User.find();
         handleSuccess(res, '刪除成功', user);
       } else {
-        errorHandle(res, '刪除失敗，查無此 ID');
+        appError(400, '刪除失敗，查無此 ID', next);
       }
     } catch (error) {
-      errorHandle(res, error.message);
+      appError(400, error.message, next);
     }
   },
   async updateUsers(req, res, next) {
@@ -54,7 +54,7 @@ const users = {
       const id = req.params.id;
       const data = req.body;
       if (!data.email) {
-        return errorHandle(res, '欄位是空的，請填寫');
+        return appError(400, 'email 欄位未填寫', next);
       }
       const updateUsers = await User.findByIdAndUpdate(id, {
         name: data.name,
@@ -67,12 +67,12 @@ const users = {
           runValidators: true
         });
       if (!updateUsers) {
-        return errorHandle(res, '更新失敗，查無此 ID');
+        return appError(400, '更新失敗，查無此 ID', next);
       }
       const user = await User.find();
       handleSuccess(res, '更新成功', user);
     } catch (error) {
-      errorHandle(res, "欄位沒有正確，或沒有此 ID");
+      appError(400, "欄位沒有正確，或沒有此 ID", next);
     }
   }
 }

@@ -1,5 +1,5 @@
 const handleSuccess = require('../service/handleSuccess');
-const { errorHandle } = require('../service/handle');
+const appError = require('../service/appError');
 const Post = require('../models/postModel');
 
 const posts = {
@@ -26,16 +26,16 @@ const posts = {
         })
         handleSuccess(res, '新增成功', newPost);
       } else {
-        errorHandle(res, '欄位是空的，請填寫');
+        appError(400, 'content 欄位未填寫', next);
       }
     } catch (error) {
-      errorHandle(res, error.message);
+      appError(400, error.message, next);
     }
   },
   async deleteAll(req, res, next) {
     // 取出 req 的 Url，再判斷是否等於 '/api/posts/'
     if (req.originalUrl == '/api/posts/') {
-      errorHandle(res, '刪除失敗，查無此 ID');
+      appError(400, '刪除失敗，查無此 ID', next);
     } else {
       await Post.deleteMany({});
       const deleteAll = await Post.find();
@@ -50,10 +50,10 @@ const posts = {
         const post = await Post.find();
         handleSuccess(res, '刪除成功', post);
       } else {
-        errorHandle(res, '刪除失敗，查無此 ID');
+        appError(400, '刪除失敗，查無此 ID', next);
       }
     } catch (error) {
-      errorHandle(res, error.message);
+      appError(400, error.message, next);
     }
   },
   async patchPosts(req, res, next) {
@@ -61,7 +61,7 @@ const posts = {
       const id = req.params.id;
       const data = req.body;
       if (!data.content) {
-        return errorHandle(res, '欄位是空的，請填寫');
+        return appError(400, 'content 欄位未填寫', next);
       }
       const patchPosts = await Post.findByIdAndUpdate(id, {
         name: data.name,
@@ -74,7 +74,7 @@ const posts = {
           runValidators: true
         });
       if (!patchPosts) {
-        return errorHandle(res, '更新失敗，查無此 ID');
+        return appError(400, '更新失敗，查無此 ID', next);
       }
       const post = await Post.find().populate({
         path: 'user',
@@ -82,7 +82,7 @@ const posts = {
       });
       handleSuccess(res, '更新成功', post);
     } catch (error) {
-      errorHandle(res, "欄位沒有正確，或沒有此 ID");
+      appError(400, "欄位沒有正確，或沒有此 ID", next);
     }
   }
 }
