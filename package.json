@@ -1,10 +1,11 @@
 {
-  "name": "expressmvc-api",
+  "name": "express-middleware",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "start:dev": "nodemon ./bin/www"
+    "start:dev": "cross-env NODE_ENV=dev nodemon ./bin/www",
+    "start:production": "cross-env NODE_ENV=production nodemon ./bin/www"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -14,5 +15,8 @@
     "express": "~4.16.1",
     "mongoose": "^6.3.2",
     "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }

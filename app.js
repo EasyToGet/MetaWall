@@ -31,6 +31,10 @@ app.use('/', indexRouter);
 app.use('/api', postsRouter);
 app.use('/api', usersRouter);
 
+// 因為 windows 環境問題，需要安裝 npm 的 cross-env
+// package.json 的 NODE_ENV 前面須加 cross-env
+// 例如: "cross-env NODE_ENV=dev 或 cross-env NODE_ENV=production
+
 // 404 not found 
 app.use((req, res, next) => {
   res.status(404).send({
@@ -41,11 +45,47 @@ app.use((req, res, next) => {
   next();
 });
 
-// express 錯誤處理
+// express 錯誤處理 - 統一管理錯誤處理
+// 自訂 production 環境錯誤 
+const resErrorProd = (err, res) => {
+  if (err.isOperational) {
+    res.status(err.statusCode).send({
+      message: err.message
+    });
+  } else {
+    // log 紀錄
+    console.error('出現重大錯誤', err);
+    // 送出預設罐頭訊息
+    res.status(500).send({
+      status: 'error',
+      message: '系統錯誤，請恰系統管理員'
+    });
+  }
+};
+
+// 自訂 dev 環境錯誤 
+const resErrorDev = (err, res) => {
+  res.status(err.statusCode).send({
+    message: err.message,
+    error: err,
+    stack: err.stack
+  });
+};
+
+//判斷是 dev 環境 or production 環境
 app.use((err, req, res, next) => {
-  res.status(500).send({
-    "error": err.message
-  })
+  // dev
+  err.statusCode = err.statusCode || 500;
+  if (process.env.NODE_ENV === 'dev') {
+    return resErrorDev(err, res);
+  };
+  // production
+  if (err.name === 'ValidationError') {
+    err.message = "資料欄位未填寫正確，請重新輸入！";
+    err.isOperational = true;
+    return resErrorProd(err, res);
+  }
+  resErrorProd(err, res);
 })
 
 // 未捕捉到的 catch，最後守門員XD

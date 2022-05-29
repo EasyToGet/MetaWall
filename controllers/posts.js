@@ -18,7 +18,7 @@ const posts = {
     try {
       const data = req.body;
       if (data.content == '') {
-        return appError(400, 'content 欄位未填寫', next);
+        return next(appError(400, 'content 欄位未填寫', next));
       }
       const newPost = await Post.create({
         user: data.user,
@@ -28,13 +28,13 @@ const posts = {
       })
       handleSuccess(res, '新增成功', newPost);
     } catch (error) {
-      appError(400, error.message, next);
+      next(appError(400, error.message, next));
     }
   },
   async deleteAll(req, res, next) {
     // 取出 req 的 Url，再判斷是否等於 '/api/posts/'
     if (req.originalUrl == '/api/posts/') {
-      return appError(400, '刪除失敗，查無此 ID', next);
+      return next(appError(400, '刪除失敗，查無此 ID', next));
     }
     await Post.deleteMany({});
     const deleteAll = await Post.find();
@@ -45,12 +45,12 @@ const posts = {
       const id = req.params.id;
       const deleteSingle = await Post.findByIdAndDelete(id);
       if (!deleteSingle) {
-        return appError(400, '刪除失敗，查無此 ID', next);
+        return next(appError(400, '刪除失敗，查無此 ID', next));
       }
       const post = await Post.find();
       handleSuccess(res, '刪除成功', post);
     } catch (error) {
-      appError(400, error.message, next);
+      next(appError(400, error.message, next));
     }
   },
   async patchPosts(req, res, next) {
@@ -58,7 +58,7 @@ const posts = {
       const id = req.params.id;
       const data = req.body;
       if (!data.content) {
-        return appError(400, 'content 欄位未填寫', next);
+        return next(appError(400, 'content 欄位未填寫', next));
       }
       const patchPosts = await Post.findByIdAndUpdate(id, {
         name: data.name,
@@ -71,7 +71,7 @@ const posts = {
           runValidators: true
         });
       if (!patchPosts) {
-        return appError(400, '更新失敗，查無此 ID', next);
+        return next(appError(400, '更新失敗，查無此 ID', next));
       }
       const post = await Post.find().populate({
         path: 'user',
@@ -79,7 +79,7 @@ const posts = {
       });
       handleSuccess(res, '更新成功', post);
     } catch (error) {
-      appError(400, "欄位沒有正確，或沒有此 ID", next);
+      next(appError(400, "欄位沒有正確，或沒有此 ID", next));
     }
   }
 }

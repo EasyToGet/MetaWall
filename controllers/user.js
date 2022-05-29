@@ -11,7 +11,7 @@ const users = {
     try {
       const data = req.body;
       if (data.email == '') {
-        return appError(400, 'content 欄位未填寫', next);
+        return next(appError(400, 'content 欄位未填寫', next));
       }
       const newUsers = await User.create({
         name: data.name,
@@ -21,13 +21,13 @@ const users = {
       })
       handleSuccess(res, '新增成功', newUsers);
     } catch (error) {
-      appError(400, error.message, next);
+      next(appError(400, error.message, next));
     }
   },
   async deleteAll(req, res, next) {
     // 取出 req 的 Url，再判斷是否等於 '/api/users/'
     if (req.originalUrl == '/api/users/') {
-      return appError(400, '刪除失敗，查無此 ID', next);
+      return next(appError(400, '刪除失敗，查無此 ID', next));
     }
     await User.deleteMany({});
     const deleteAll = await User.find();
@@ -38,12 +38,12 @@ const users = {
       const id = req.params.id;
       const deleteSingle = await User.findByIdAndDelete(id);
       if (!deleteSingle) {
-        return appError(400, '刪除失敗，查無此 ID', next);
+        return next(appError(400, '刪除失敗，查無此 ID', next));
       }
       const user = await User.find();
       handleSuccess(res, '刪除成功', user);
     } catch (error) {
-      appError(400, error.message, next);
+      next(appError(400, error.message, next));
     }
   },
   async updateUsers(req, res, next) {
@@ -51,7 +51,7 @@ const users = {
       const id = req.params.id;
       const data = req.body;
       if (!data.email) {
-        return appError(400, 'email 欄位未填寫', next);
+        return next(appError(400, 'email 欄位未填寫', next));
       }
       const updateUsers = await User.findByIdAndUpdate(id, {
         name: data.name,
@@ -64,12 +64,12 @@ const users = {
           runValidators: true
         });
       if (!updateUsers) {
-        return appError(400, '更新失敗，查無此 ID', next);
+        return next(appError(400, '更新失敗，查無此 ID', next));
       }
       const user = await User.find();
       handleSuccess(res, '更新成功', user);
     } catch (error) {
-      appError(400, "欄位沒有正確，或沒有此 ID", next);
+      next(appError(400, "欄位沒有正確，或沒有此 ID", next));
     }
   }
 }
