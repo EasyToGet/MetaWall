@@ -7,7 +7,7 @@ const posts = {
     // asc 遞增 (由小到大，由舊到新): "createdAt" ; desc 遞減 (由大到小、由新到舊): "-createdAt"
     const timeSort = req.query.timeSort === "asc" ? "createdAt" : "-createdAt";
     // new RegExp() 將字串轉成正規表達式，例如: "cool" -> /cool/
-    const q = req.query.keyword !== undefined ? { "content": new RegExp(req.query.keyword) } : {}; 
+    const q = req.query.keyword !== undefined ? { "content": new RegExp(req.query.keyword) } : {};
     const allPosts = await Post.find(q).populate({
       path: 'user',
       select: 'name photo'
@@ -17,17 +17,16 @@ const posts = {
   async createdPosts(req, res, next) {
     try {
       const data = req.body;
-      if (data.content !== '') {
-        const newPost = await Post.create({
-          user: data.user,
-          tags: data.tags,
-          type: data.type,
-          content: data.content
-        })
-        handleSuccess(res, '新增成功', newPost);
-      } else {
-        appError(400, 'content 欄位未填寫', next);
+      if (data.content == '') {
+        return appError(400, 'content 欄位未填寫', next);
       }
+      const newPost = await Post.create({
+        user: data.user,
+        tags: data.tags,
+        type: data.type,
+        content: data.content
+      })
+      handleSuccess(res, '新增成功', newPost);
     } catch (error) {
       appError(400, error.message, next);
     }
@@ -35,23 +34,21 @@ const posts = {
   async deleteAll(req, res, next) {
     // 取出 req 的 Url，再判斷是否等於 '/api/posts/'
     if (req.originalUrl == '/api/posts/') {
-      appError(400, '刪除失敗，查無此 ID', next);
-    } else {
-      await Post.deleteMany({});
-      const deleteAll = await Post.find();
-      handleSuccess(res, '刪除成功', deleteAll);
+      return appError(400, '刪除失敗，查無此 ID', next);
     }
+    await Post.deleteMany({});
+    const deleteAll = await Post.find();
+    handleSuccess(res, '刪除成功', deleteAll);
   },
   async deleteSingle(req, res, next) {
     try {
       const id = req.params.id;
       const deleteSingle = await Post.findByIdAndDelete(id);
-      if (deleteSingle) {
-        const post = await Post.find();
-        handleSuccess(res, '刪除成功', post);
-      } else {
-        appError(400, '刪除失敗，查無此 ID', next);
+      if (!deleteSingle) {
+        return appError(400, '刪除失敗，查無此 ID', next);
       }
+      const post = await Post.find();
+      handleSuccess(res, '刪除成功', post);
     } catch (error) {
       appError(400, error.message, next);
     }
