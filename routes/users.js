@@ -1,15 +1,16 @@
 var express = require('express');
 var router = express.Router();
 const UserController = require('../controllers/user');
+const handleErrorAsync = require('../service/handleErrorAsync');
 
-router.get('/users', UserController.getUser);
+router.get('/users', handleErrorAsync(UserController.getUser));
 
-router.post('/users', UserController.createdUsers);
+router.post('/users', handleErrorAsync(UserController.createdUsers));
 
-router.delete('/users', UserController.deleteAll);
+router.delete('/users', handleErrorAsync(UserController.deleteAll));
 
-router.delete('/users/:id', UserController.deleteSingle);
+router.delete('/users/:id', handleErrorAsync(UserController.deleteSingle));
 
-router.patch('/users/:id', UserController.updateUsers);
+router.patch('/users/:id', handleErrorAsync(UserController.updateUsers));
 
 module.exports = router;

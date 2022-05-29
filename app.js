@@ -31,10 +31,6 @@ app.use('/', indexRouter);
 app.use('/api', postsRouter);
 app.use('/api', usersRouter);
 
-// 因為 windows 環境問題，需要安裝 npm 的 cross-env
-// package.json 的 NODE_ENV 前面須加 cross-env
-// 例如: "cross-env NODE_ENV=dev 或 cross-env NODE_ENV=production
-
 // 404 not found 
 app.use((req, res, next) => {
   res.status(404).send({
@@ -71,6 +67,10 @@ const resErrorDev = (err, res) => {
     stack: err.stack
   });
 };
+
+// 因為 windows 環境問題，需要安裝 npm 的 cross-env
+// package.json 的 NODE_ENV 前面須加 cross-env
+// 例如: "cross-env NODE_ENV=dev 或 cross-env NODE_ENV=production
 
 //判斷是 dev 環境 or production 環境
 app.use((err, req, res, next) => {
