@@ -1,0 +1,330 @@
+{
+	"info": {
+		"_postman_id": "cb382b82-4761-4ea3-95c6-b423700ea153",
+		"name": "expressMiddleware - heroku",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9557010"
+	},
+	"item": [
+		{
+			"name": "取得所有貼文 - posts",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://morning-waters-69763.herokuapp.com/api/posts?keyword=&timeSort=desc",
+					"protocol": "https",
+					"host": [
+						"morning-waters-69763",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"posts"
+					],
+					"query": [
+						{
+							"key": "keyword",
+							"value": ""
+						},
+						{
+							"key": "timeSort",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增貼文 - posts",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user\": \"6294e3fd807f3cdb555ce7ae\",\r\n    \"content\": \"我要成為海賊王\",\r\n    \"tags\": \"海賊\",\r\n    \"type\": \"group\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://morning-waters-69763.herokuapp.com/api/posts",
+					"protocol": "https",
+					"host": [
+						"morning-waters-69763",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除所有貼文 - posts",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://morning-waters-69763.herokuapp.com/api/posts",
+					"protocol": "https",
+					"host": [
+						"morning-waters-69763",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除單筆貼文 - posts",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://morning-waters-69763.herokuapp.com/api/posts/6294e41b807f3cdb555ce7b6",
+					"protocol": "https",
+					"host": [
+						"morning-waters-69763",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"posts",
+						"6294e41b807f3cdb555ce7b6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更改單筆貼文 - posts",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"我是漩渦鳴人\",\r\n    \"tags\": \"忍者\",\r\n    \"type\": \"person\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://morning-waters-69763.herokuapp.com/api/posts/6294e43b807f3cdb555ce7c0",
+					"protocol": "https",
+					"host": [
+						"morning-waters-69763",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"posts",
+						"6294e43b807f3cdb555ce7c0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "取得所有使用者 - users",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://morning-waters-69763.herokuapp.com/api/users",
+					"protocol": "https",
+					"host": [
+						"morning-waters-69763",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增使用者- users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mary\",\r\n    \"email\": \"qqq@gmail.com\",\r\n    \"password\": \"12345678\",\r\n    \"photo\": \"qqq\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://morning-waters-69763.herokuapp.com/api/users",
+					"protocol": "https",
+					"host": [
+						"morning-waters-69763",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除所有使用者- users",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://morning-waters-69763.herokuapp.com/api/users",
+					"protocol": "https",
+					"host": [
+						"morning-waters-69763",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除單筆使用者 - users",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://morning-waters-69763.herokuapp.com/api/users/6294e3d9807f3cdb555ce7a6",
+					"protocol": "https",
+					"host": [
+						"morning-waters-69763",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"users",
+						"6294e3d9807f3cdb555ce7a6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更改單筆使用者 - users",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"John\",\r\n    \"email\": \"vvv@gmail.com\",\r\n    \"password\": \"zxcvbnma\",\r\n    \"photo\": \"vvvv\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://morning-waters-69763.herokuapp.com/api/users/6294e3f1807f3cdb555ce7ac",
+					"protocol": "https",
+					"host": [
+						"morning-waters-69763",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"api",
+						"users",
+						"6294e3f1807f3cdb555ce7ac"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
