@@ -19,7 +19,7 @@ const posts = {
   //  createdPosts
   async createdPosts(req, res, next) {
     const data = req.body;
-    if (data.content == '') {
+    if (!data.content) {
       return next(appError(400, 'content 欄位未填寫', next));
     }
     const newPost = await Post.create({
@@ -38,7 +38,7 @@ const posts = {
       return next(appError(400, '刪除失敗，查無此 ID', next));
     }
     await Post.deleteMany({});
-    const deleteAll = await Post.find();
+    const deleteAll = [];
     handleSuccess(res, '刪除成功', deleteAll);
   },
 

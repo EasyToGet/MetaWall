@@ -12,7 +12,7 @@ const users = {
   //  createdUsers
   async createdUsers(req, res, next) {
     const data = req.body;
-    if (data.email == '') {
+    if (!data.email) {
       return next(appError(400, 'content 欄位未填寫', next));
     }
     const newUsers = await User.create({
@@ -31,7 +31,7 @@ const users = {
       return next(appError(400, '刪除失敗，查無此 ID', next));
     }
     await User.deleteMany({});
-    const deleteAll = await User.find();
+    const deleteAll = [];
     handleSuccess(res, '刪除成功', deleteAll);
   },
 
