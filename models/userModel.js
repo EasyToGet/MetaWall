@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, '貼文姓名未寫']
+      required: [true, '請輸入您的名字']
     },
     email: {
       type: String,
@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema(
     },
     photo: {
       type: String
+    },
+    sex: {
+      type: String,
+      enum: ["male", "female"]
     },
     createdAt: {
       type: Date,
