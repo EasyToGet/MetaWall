@@ -5,7 +5,7 @@ const handleErrorAsync = require('../service/handleErrorAsync');
 
 router.get('/users', handleErrorAsync(UserController.getUser));
 
-router.post('/users', handleErrorAsync(UserController.createdUsers));
+router.post('/users/sign_up', handleErrorAsync(UserController.signUp));
 
 router.delete('/users', handleErrorAsync(UserController.deleteAll));
 
