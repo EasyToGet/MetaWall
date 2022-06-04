@@ -36,6 +36,21 @@ const users = {
     generateSendJWT(newUser, 201, res);
   },
 
+  // signIn
+  async signIn(req, res, next) {
+    let { email, password } = req.body;
+    if (!email || !password) {
+      return next(appError(400, "帳號密碼不可為空", next));
+    };
+    const user = await User.findOne({ email }).select('+password');
+    const auth = await bcrypt.compare(password, user.password);
+    if (!auth) {
+      return next(appError(400, "您的密碼不正確", next));
+    };
+    console.log(user);
+    generateSendJWT(user, 200, res);
+  },
+
   //  getUser
   async getUser(req, res, next) {
     const allUsers = await User.find();
