@@ -39,22 +39,73 @@ const users = {
   // signIn
   async signIn(req, res, next) {
     let { email, password } = req.body;
+
     if (!email || !password) {
       return next(appError(400, "帳號密碼不可為空", next));
     };
+
     const user = await User.findOne({ email }).select('+password');
     const auth = await bcrypt.compare(password, user.password);
+
     if (!auth) {
       return next(appError(400, "您的密碼不正確", next));
     };
-    console.log(user);
+
     generateSendJWT(user, 200, res);
   },
 
-  //  getUser
-  async getUser(req, res, next) {
+  // updatePassword
+  async updatePassword(req, res, next) {
+    const { password, confirmPassword } = req.body;
+
+    if (password !== confirmPassword) {
+      return next(appError(400, "密碼不一致！", next));
+    }
+
+    const newPassword = await bcrypt.hash(password, 12);
+    const user = await User.findByIdAndUpdate(req.user.id, {
+      password: newPassword
+    });
+
+    generateSendJWT(user, 200, res);
+  },
+
+  //  getUserProfile
+  async getUserProfile(req, res, next) {
+    res.send({
+      status: "success",
+      user: req.user
+    })
+  },
+
+  //  getAllUsers
+  async getAllUsers(req, res, next) {
     const allUsers = await User.find();
     handleSuccess(res, '取得成功', allUsers);
+  },
+
+  //  updateUsers
+  async updateUserProfile(req, res, next) {
+    const id = req.params.id;
+    const data = req.body;
+    if (!data.email) {
+      return next(appError(400, 'email 欄位未填寫', next));
+    }
+    const updateUsers = await User.findByIdAndUpdate(id, {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      photo: data.photo
+    },
+      {
+        new: true,
+        runValidators: true
+      });
+    if (!updateUsers) {
+      return next(appError(400, '更新失敗，查無此 ID', next));
+    }
+    const user = await User.find();
+    handleSuccess(res, '更新成功', user);
   },
 
   //  deleteAll
@@ -77,30 +128,6 @@ const users = {
     }
     const user = await User.find();
     handleSuccess(res, '刪除成功', user);
-  },
-
-  //  updateUsers
-  async updateUsers(req, res, next) {
-    const id = req.params.id;
-    const data = req.body;
-    if (!data.email) {
-      return next(appError(400, 'email 欄位未填寫', next));
-    }
-    const updateUsers = await User.findByIdAndUpdate(id, {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      photo: data.photo
-    },
-      {
-        new: true,
-        runValidators: true
-      });
-    if (!updateUsers) {
-      return next(appError(400, '更新失敗，查無此 ID', next));
-    }
-    const user = await User.find();
-    handleSuccess(res, '更新成功', user);
   }
 }
 
