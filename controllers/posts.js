@@ -25,6 +25,9 @@ const posts = {
       path: 'user',
       select: 'name photo'
     });
+    if (!singlePosts) {
+      return next(appError(400, "查無此貼文", next));
+    }
     handleSuccess(res, '取得成功', singlePosts);
   },
 
