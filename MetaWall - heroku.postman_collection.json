@@ -1,0 +1,507 @@
+{
+	"info": {
+		"_postman_id": "113edf3a-58f8-494c-bc19-53a09f3e6aa9",
+		"name": "MetaWall - heroku",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9557010"
+	},
+	"item": [
+		{
+			"name": "會員功能",
+			"item": [
+				{
+					"name": "註冊使用者- users",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"John\",\r\n    \"email\": \"zzz@gmail.com\",\r\n    \"password\": \"1q2w3e4r\",\r\n    \"confirmPassword\": \"1q2w3e4r\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rocky-earth-79722.herokuapp.com/api/users/sign_up",
+							"protocol": "https",
+							"host": [
+								"rocky-earth-79722",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"sign_up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "登入使用者- users",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"aaa@gmail.com\",\r\n    \"password\": \"1q2w3e4r\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rocky-earth-79722.herokuapp.com/api/users/sign_in",
+							"protocol": "https",
+							"host": [
+								"rocky-earth-79722",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"sign_in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "重設使用者密碼- users",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"1q2w3e4r5t\",\r\n    \"confirmPassword\": \"1q2w3e4r5t\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rocky-earth-79722.herokuapp.com/api/users/updatePassword",
+							"protocol": "https",
+							"host": [
+								"rocky-earth-79722",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"updatePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得個人資料 - users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rocky-earth-79722.herokuapp.com/api/users/profile",
+							"protocol": "https",
+							"host": [
+								"rocky-earth-79722",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得所有使用者 - users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rocky-earth-79722.herokuapp.com/api/users",
+							"protocol": "https",
+							"host": [
+								"rocky-earth-79722",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "刪除所有使用者- users",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rocky-earth-79722.herokuapp.com/api/users",
+							"protocol": "https",
+							"host": [
+								"rocky-earth-79722",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "刪除單筆使用者 - users",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rocky-earth-79722.herokuapp.com/api/users/629cc37784cf66cbb898e964",
+							"protocol": "https",
+							"host": [
+								"rocky-earth-79722",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"629cc37784cf66cbb898e964"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "更改單筆使用者 - users",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Mary\",\r\n    \"sex\": \"female\",\r\n    \"photo\": \"aaaaa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rocky-earth-79722.herokuapp.com/api/users/profile",
+							"protocol": "https",
+							"host": [
+								"rocky-earth-79722",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "動態貼文",
+			"item": [
+				{
+					"name": "取得所有貼文 - posts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rocky-earth-79722.herokuapp.com/api/posts?keyword=&timeSort=desc",
+							"protocol": "https",
+							"host": [
+								"rocky-earth-79722",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"posts"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": ""
+								},
+								{
+									"key": "timeSort",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得單一貼文 - posts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rocky-earth-79722.herokuapp.com/api/posts/629cc46284cf66cbb898e98a",
+							"protocol": "https",
+							"host": [
+								"rocky-earth-79722",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"posts",
+								"629cc46284cf66cbb898e98a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "新增貼文 - posts",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"我要成為火影\",\r\n    \"image\": \"qwerrt\",\r\n    \"tags\": \"忍者\",\r\n    \"type\": \"group\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rocky-earth-79722.herokuapp.com/api/posts",
+							"protocol": "https",
+							"host": [
+								"rocky-earth-79722",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "刪除所有貼文 - posts",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rocky-earth-79722.herokuapp.com/api/posts",
+							"protocol": "https",
+							"host": [
+								"rocky-earth-79722",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "刪除單筆貼文 - posts",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rocky-earth-79722.herokuapp.com/api/posts/629cbba52e8c8b54cd008ec3",
+							"protocol": "https",
+							"host": [
+								"rocky-earth-79722",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"posts",
+								"629cbba52e8c8b54cd008ec3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "更改單筆貼文 - posts",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"我是漩渦鳴人\",\r\n    \"tags\": \"忍者\",\r\n    \"type\": \"person\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://rocky-earth-79722.herokuapp.com/api/posts/629cb29a9bed7442cde7cee8",
+							"protocol": "https",
+							"host": [
+								"rocky-earth-79722",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"posts",
+								"629cb29a9bed7442cde7cee8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
