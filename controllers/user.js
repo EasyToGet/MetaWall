@@ -84,28 +84,28 @@ const users = {
     handleSuccess(res, '取得成功', allUsers);
   },
 
-  //  updateUsers
+  //  updateUserProfile
   async updateUserProfile(req, res, next) {
-    const id = req.params.id;
-    const data = req.body;
-    if (!data.email) {
-      return next(appError(400, 'email 欄位未填寫', next));
+    const { name, sex, photo } = req.body;
+    if (!name) {
+      return next(appError(400, "暱稱不能為空白", next));
+    };
+
+    const updateProfile = {
+      name,
+      sex,
+      photo
     }
-    const updateUsers = await User.findByIdAndUpdate(id, {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      photo: data.photo
-    },
-      {
-        new: true,
-        runValidators: true
-      });
-    if (!updateUsers) {
-      return next(appError(400, '更新失敗，查無此 ID', next));
-    }
-    const user = await User.find();
-    handleSuccess(res, '更新成功', user);
+
+    const user = await User.findByIdAndUpdate(req.user.id, updateProfile, {
+      new: true,
+      runValidators: true
+    });
+
+    res.send({
+      status: "success",
+      user: user
+    })
   },
 
   //  deleteAll

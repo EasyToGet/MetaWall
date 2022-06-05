@@ -14,7 +14,7 @@ router.get('/users/profile', isAuth, handleErrorAsync(UserController.getUserProf
 
 router.get('/users', handleErrorAsync(UserController.getAllUsers));
 
-router.patch('/users/:id', isAuth, handleErrorAsync(UserController.updateUserProfile));
+router.patch('/users/profile', isAuth, handleErrorAsync(UserController.updateUserProfile));
 
 router.delete('/users', handleErrorAsync(UserController.deleteAll));
 
