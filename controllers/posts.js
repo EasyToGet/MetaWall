@@ -1,5 +1,6 @@
 const handleSuccess = require('../service/handleSuccess');
 const appError = require('../service/appError');
+const checkObjectId = require('../service/checkObjectId');
 const Post = require('../models/postModel');
 
 const posts = {
@@ -17,18 +18,16 @@ const posts = {
   },
 
   //  getPosts
-  async getPosts(req, res, next) {
-    const { id } = req.params;
-    const singlePosts = await Post.find({
+  async getUserPosts(req, res, next) {
+    const id = req.params.id;
+    checkObjectId(id, next);
+    const singlePost = await Post.find({
       _id: id
     }).populate({
       path: 'user',
       select: 'name photo'
     });
-    if (!singlePosts) {
-      return next(appError(400, "查無此貼文", next));
-    }
-    handleSuccess(res, '取得成功', singlePosts);
+    handleSuccess(res, '取得成功', singlePost);
   },
 
   //  createdPosts
