@@ -72,10 +72,8 @@ const users = {
 
   //  getUserProfile
   async getUserProfile(req, res, next) {
-    res.send({
-      status: "success",
-      user: req.user
-    })
+    const user = req.user;
+    handleSuccess(res, '取得成功', user);
   },
 
   //  getAllUsers
@@ -101,11 +99,7 @@ const users = {
       new: true,
       runValidators: true
     });
-
-    res.send({
-      status: "success",
-      user: user
-    })
+    handleSuccess(res, '更新成功', user);
   },
 
   //  deleteAll

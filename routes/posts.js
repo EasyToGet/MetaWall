@@ -2,10 +2,14 @@ var express = require('express');
 var router = express.Router();
 const PostsControllers = require('../controllers/posts');
 const handleErrorAsync = require('../service/handleErrorAsync');
+const { isAuth } = require('../service/auth');
 
-router.get('/posts', handleErrorAsync(PostsControllers.getPosts));
 
-router.post('/posts', handleErrorAsync(PostsControllers.createdPosts));
+router.get('/posts', isAuth, handleErrorAsync(PostsControllers.getAllPosts));
+
+router.get('/posts/:id', isAuth, handleErrorAsync(PostsControllers.getPosts));
+
+router.post('/posts', isAuth, handleErrorAsync(PostsControllers.createdPosts));
 
 router.delete('/posts', handleErrorAsync(PostsControllers.deleteAll));
 
