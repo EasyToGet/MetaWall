@@ -1,7 +1,6 @@
-const handleSuccess = (res, message, data) => {
-  res.send({
+const handleSuccess = (res, statusCode, data) => {
+  res.status(statusCode).send({
     "status": "success",
-    "message": message,
     "data": data
   });
   res.end();

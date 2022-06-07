@@ -14,7 +14,7 @@ const posts = {
       path: 'user',
       select: 'name photo'
     }).sort(timeSort);
-    handleSuccess(res, '取得成功', allPosts);
+    handleSuccess(res, 200, allPosts);
   },
 
   //  getPosts
@@ -27,7 +27,7 @@ const posts = {
       path: 'user',
       select: 'name photo'
     });
-    handleSuccess(res, '取得成功', singlePost);
+    handleSuccess(res, 200, singlePost);
   },
 
   //  createdPosts
@@ -43,7 +43,7 @@ const posts = {
       tags: data.tags,
       type: data.type,
     })
-    handleSuccess(res, '新增成功', newPost);
+    handleSuccess(res, 200, newPost);
   },
 
   //  deleteAll
@@ -54,7 +54,7 @@ const posts = {
     }
     await Post.deleteMany({});
     const deleteAll = [];
-    handleSuccess(res, '刪除成功', deleteAll);
+    handleSuccess(res, 200, deleteAll);
   },
 
   //  deleteSingle
@@ -65,7 +65,7 @@ const posts = {
       return next(appError(400, '刪除失敗，查無此 ID', next));
     }
     const post = await Post.find();
-    handleSuccess(res, '刪除成功', post);
+    handleSuccess(res, 200, post);
   },
 
   //  patchPosts
@@ -92,7 +92,7 @@ const posts = {
       path: 'user',
       select: 'name photo'
     });
-    handleSuccess(res, '更新成功', post);
+    handleSuccess(res, 200, post);
   }
 }
 

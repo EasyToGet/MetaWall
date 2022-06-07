@@ -95,13 +95,13 @@ const users = {
   async getUserProfile(req, res, next) {
     const { id } = req.user;
     const user = await User.findById(id).select('+email');
-    handleSuccess(res, '取得成功', user);
+    handleSuccess(res, 200, user);
   },
 
   //  getAllUsers
   async getAllUsers(req, res, next) {
     const allUsers = await User.find();
-    handleSuccess(res, '取得成功', allUsers);
+    handleSuccess(res, 200, allUsers);
   },
 
   //  updateUserProfile
@@ -124,7 +124,7 @@ const users = {
       returnDocument: 'after',
       runValidators: true
     });
-    handleSuccess(res, '更新成功', user);
+    handleSuccess(res, 200, user);
   },
 
   //  deleteAll
@@ -135,7 +135,7 @@ const users = {
     }
     await User.deleteMany({});
     const deleteAll = [];
-    handleSuccess(res, '刪除成功', deleteAll);
+    handleSuccess(res, 200, deleteAll);
   },
 
   //  deleteSingle
@@ -146,7 +146,7 @@ const users = {
       return next(appError(400, '刪除失敗，查無此 ID', next));
     }
     const user = await User.find();
-    handleSuccess(res, '刪除成功', user);
+    handleSuccess(res, 200, user);
   }
 }
 
