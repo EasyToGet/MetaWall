@@ -8,6 +8,7 @@ const cors = require('cors');   // 解決跨網域問題
 var indexRouter = require('./routes/index');
 var postsRouter = require('./routes/posts');
 var usersRouter = require('./routes/users');
+var uploadRouter = require('./routes/upload');
 
 // 補捉程式錯誤，抓戰犯用XD
 process.on('uncaughtException', err => {
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/api', postsRouter);
 app.use('/api', usersRouter);
+app.use('/api', uploadRouter);
 
 // 404 not found 
 app.use((req, res, next) => {
