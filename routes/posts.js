@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const PostsControllers = require('../controllers/posts');
+const PostsControllers = require('../controllers/postsController');
 const handleErrorAsync = require('../service/handleErrorAsync');
 const { isAuth } = require('../service/auth');
 
