@@ -1,5 +1,6 @@
 const sizeOf = require('image-size');
 const { ImgurClient } = require('imgur');
+const handleSuccess = require('../service/handleSuccess');
 const appError = require('../service/appError');
 
 const upload = {
@@ -25,10 +26,10 @@ const upload = {
       type: 'base64',
       album: process.env.IMGUR_ALBUM_ID
     });
-    res.status(200).send({
-      status: "success",
+    const imgUrl = {
       imgUrl: response.data.link
-    })
+    }
+    handleSuccess(res, 201, imgUrl);
   }
 }
 

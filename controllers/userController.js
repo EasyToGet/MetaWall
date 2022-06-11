@@ -31,7 +31,7 @@ const users = {
     })) {
       return next(appError(400, "密碼需至少 8 碼以上，並中英混合", next));
     };
-    // 是否為 Email
+    // 是否為 Email 格式
     if (!validator.isEmail(email)) {
       return next(appError(400, "Email 格式不正確", next));
     };
@@ -53,9 +53,25 @@ const users = {
   // signIn
   async signIn(req, res, next) {
     let { email, password } = req.body;
+    //  檢查帳號密碼是否正確
     if (!email || !password) {
       return next(appError(400, "帳號或密碼錯誤，請重新輸入！", next));
     };
+    // 密碼需至少 8 碼以上，並中英混合
+    if (!validator.isStrongPassword(password, {
+      minLength: 8,
+      minLowercase: 1,
+      minUppercase: 0,
+      minNumbers: 1,
+      minSymbols: 0
+    })) {
+      return next(appError(400, "密碼需至少 8 碼以上，並中英混合", next));
+    };
+    // 是否為 Email 格式
+    if (!validator.isEmail(email)) {
+      return next(appError(400, "Email 格式不正確", next));
+    };
+    // 取得 email 跟 password
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
       return next(appError(400, "帳號錯誤或尚未註冊", next));
@@ -108,7 +124,7 @@ const users = {
   async updateUserProfile(req, res, next) {
     const { name, sex, photo } = req.body;
     // 暱稱不能為空白
-    if (!name) {
+    if (!name || !name.trim()) {
       return next(appError(400, "暱稱不能為空白", next));
     };
     // 暱稱至少 2 個字元以上
@@ -119,7 +135,7 @@ const users = {
       name,
       sex,
       photo
-    }
+    };
     const user = await User.findByIdAndUpdate(req.user.id, updateProfile, {
       returnDocument: 'after',
       runValidators: true

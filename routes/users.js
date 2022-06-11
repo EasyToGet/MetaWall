@@ -4,20 +4,20 @@ const UserController = require('../controllers/userController');
 const handleErrorAsync = require('../service/handleErrorAsync');
 const { isAuth } = require('../service/auth');
 
-router.post('/users/sign_up', handleErrorAsync(UserController.signUp));
+router.post('/user/sign_up', handleErrorAsync(UserController.signUp));
 
-router.post('/users/sign_in', handleErrorAsync(UserController.signIn));
+router.post('/user/sign_in', handleErrorAsync(UserController.signIn));
 
-router.post('/users/updatePassword', isAuth, handleErrorAsync(UserController.updatePassword));
+router.patch('/user/updatePassword', isAuth, handleErrorAsync(UserController.updatePassword));
 
-router.get('/users/profile', isAuth, handleErrorAsync(UserController.getUserProfile));
+router.get('/user/profile', isAuth, handleErrorAsync(UserController.getUserProfile));
 
-router.get('/users', handleErrorAsync(UserController.getAllUsers));
+router.get('/users', isAuth, handleErrorAsync(UserController.getAllUsers));
 
-router.patch('/users/profile', isAuth, handleErrorAsync(UserController.updateUserProfile));
+router.patch('/user/profile', isAuth, handleErrorAsync(UserController.updateUserProfile));
 
-router.delete('/users', handleErrorAsync(UserController.deleteAll));
+router.delete('/users', isAuth, handleErrorAsync(UserController.deleteAll));
 
-router.delete('/users/:id', handleErrorAsync(UserController.deleteSingle));
+router.delete('/user/:id', isAuth, handleErrorAsync(UserController.deleteSingle));
 
 module.exports = router;

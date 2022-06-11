@@ -18,7 +18,7 @@ const posts = {
   },
 
   //  getPosts
-  async getUserPosts(req, res, next) {
+  async getUserPost(req, res, next) {
     const id = req.params.id;
     checkObjectId(id, next);
     const singlePost = await Post.find({
@@ -31,9 +31,9 @@ const posts = {
   },
 
   //  createdPosts
-  async createdPosts(req, res, next) {
+  async createdPost(req, res, next) {
     const data = req.body;
-    if (!data.content) {
+    if (!data.content || !data.content.trim()) {
       return next(appError(400, 'content 欄位未填寫', next));
     }
     const newPost = await Post.create({
@@ -44,6 +44,38 @@ const posts = {
       type: data.type,
     })
     handleSuccess(res, 200, newPost);
+  },
+
+  //  addLike
+  async addLike(req, res, next) {
+    const _id = req.params.id;
+    const userId = req.user.id;
+    await Post.findOneAndUpdate(
+      { _id },
+      { $addToSet: { likes: userId } },
+      { new: true }
+    );
+    const addLike = {
+      postId: _id,
+      userId: userId
+    }
+    handleSuccess(res, 201, addLike);
+  },
+
+  //  unLike
+  async unLike(req, res, next) {
+    const _id = req.params.id;
+    const userId = req.user.id;
+    await Post.findOneAndUpdate(
+      { _id },
+      { $pull: { likes: userId } },
+      { new: true }
+    );
+    const unLike = {
+      postId: _id,
+      userId: userId
+    }
+    handleSuccess(res, 201, unLike);
   },
 
   //  deleteAll
@@ -69,10 +101,10 @@ const posts = {
   },
 
   //  patchPosts
-  async patchPosts(req, res, next) {
+  async patchPost(req, res, next) {
     const id = req.params.id;
     const data = req.body;
-    if (!data.content) {
+    if (!data.content || !data.content.trim()) {
       return next(appError(400, 'content 欄位未填寫', next));
     }
     const patchPosts = await Post.findByIdAndUpdate(id, {

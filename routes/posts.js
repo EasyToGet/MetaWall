@@ -7,14 +7,18 @@ const { isAuth } = require('../service/auth');
 
 router.get('/posts', isAuth, handleErrorAsync(PostsControllers.getAllPosts));
 
-router.get('/posts/:id', isAuth, handleErrorAsync(PostsControllers.getUserPosts));
+router.get('/post/:id', isAuth, handleErrorAsync(PostsControllers.getUserPost));
 
-router.post('/posts', isAuth, handleErrorAsync(PostsControllers.createdPosts));
+router.post('/post', isAuth, handleErrorAsync(PostsControllers.createdPost));
 
-router.delete('/posts', handleErrorAsync(PostsControllers.deleteAll));
+router.post('/posts/:id/like', isAuth, handleErrorAsync(PostsControllers.addLike));
 
-router.delete('/posts/:id', handleErrorAsync(PostsControllers.deleteSingle));
+router.delete('/posts/:id/unlike', isAuth, handleErrorAsync(PostsControllers.unLike));
 
-router.patch('/posts/:id', handleErrorAsync(PostsControllers.patchPosts));
+router.delete('/posts', isAuth, handleErrorAsync(PostsControllers.deleteAll));
+
+router.delete('/post/:id', isAuth, handleErrorAsync(PostsControllers.deleteSingle));
+
+router.patch('/post/:id', isAuth, handleErrorAsync(PostsControllers.patchPost));
 
 module.exports = router;

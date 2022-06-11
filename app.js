@@ -43,6 +43,7 @@ app.use((req, res, next) => {
   next();
 });
 
+
 // express 錯誤處理 - 統一管理錯誤處理
 // 自訂 production 環境錯誤 
 const resErrorProd = (err, res) => {
@@ -83,12 +84,40 @@ app.use((err, req, res, next) => {
   };
   // production
   if (err.name === 'ValidationError') {
+    err.statusCode = 400;
     err.message = "資料欄位未填寫正確，請重新輸入！";
+    err.isOperational = true;
+    return resErrorProd(err, res);
+  };
+  if (err.name === 'SyntaxError') {
+    err.statusCode = 400;
+    err.message = "資料欄位未填寫正確，請重新輸入！";
+    err.isOperational = true;
+    return resErrorProd(err, res);
+  };
+  if (err.name === "CastError") {
+    err.statusCode = 400
+    err.message = "查無此 Id！";
+    err.isOperational = true;
+    return resErrorProd(err, res);
+  }
+  if (err.name === "JsonWebTokenError") {
+    err.statusCode = 401
+    err.message = "登入過期或驗證失敗！";
     err.isOperational = true;
     return resErrorProd(err, res);
   }
   resErrorProd(err, res);
 })
+
+//   body JSON 格式錯誤
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    console.error(err);
+    return res.status(400).send({ status: 404, message: err.message }); // Bad request
+  }
+  next();
+});
 
 // 未捕捉到的 catch，最後守門員XD
 process.on('unhandledRejection', (reason, promise) => {
