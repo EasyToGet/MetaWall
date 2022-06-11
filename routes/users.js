@@ -16,6 +16,8 @@ router.get('/users', isAuth, handleErrorAsync(UserController.getAllUsers));
 
 router.patch('/user/profile', isAuth, handleErrorAsync(UserController.updateUserProfile));
 
+router.get('/users/getLikeList', isAuth, handleErrorAsync(UserController.getLikeList));
+
 router.delete('/users', isAuth, handleErrorAsync(UserController.deleteAll));
 
 router.delete('/user/:id', isAuth, handleErrorAsync(UserController.deleteSingle));

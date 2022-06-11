@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
 const User = require('../models/userModel');
+const Post = require('../models/postModel');
 const handleSuccess = require('../service/handleSuccess');
 const appError = require('../service/appError');
 const { generateSendJWT } = require('../service/auth');
@@ -141,6 +142,18 @@ const users = {
       runValidators: true
     });
     handleSuccess(res, 200, user);
+  },
+
+  //  getLikeList
+  async getLikeList(req, res, next) {
+    const userId = req.user.id;
+    const likeList = await Post.find({
+      likes: { $in: [userId] }
+    }).populate({
+      path: 'user',
+      select: 'name _id'
+    });
+    handleSuccess(res, 200, likeList);
   },
 
   //  deleteAll
