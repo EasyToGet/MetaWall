@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
 const User = require('../models/userModel');
@@ -160,18 +161,32 @@ const users = {
   async addFollow(req, res, next) {
     const paramsId = req.params.id;
     const userId = req.user.id;
+    //  檢查 User ID 格式
+    if (!mongoose.isValidObjectId(paramsId)) {
+      return appError(400, "User ID 格式錯誤", next);
+    };
+
+    //  檢查 用戶是否存在  
+    const findUser = await User.findById(paramsId);
+    if(findUser === null) {
+      return next(appError(400, "追蹤用戶不存在", next));
+    };
+    //  排除追蹤自己
     if (paramsId === userId) {
       return next(appError(401, "您無法追蹤自己", next));
     };
+    // 雙向更新 多對多 many:many
+    // 自己追蹤對方 - 自己 following
     await User.updateOne(
       {
         _id: userId,
         'following.user': { $ne: paramsId }
       },
       {
-        $addToSet: { following: { user: paramsId} }
+        $addToSet: { following: { user: paramsId } }
       }
     );
+    //  我已追蹤對方 - 對方的 following
     await User.updateOne(
       {
         _id: paramsId,
@@ -191,6 +206,16 @@ const users = {
   async unFollow(req, res, next) {
     const paramsId = req.params.id;
     const userId = req.user.id;
+    //  檢查 User ID 格式
+    if (!mongoose.isValidObjectId(paramsId)) {
+      return appError(400, "User ID 格式錯誤", next);
+    };
+
+    //  檢查 用戶是否存在  
+    const findUser = await User.findById(paramsId);
+    if (findUser === null) {
+      return next(appError(400, "追蹤用戶不存在", next));
+    };
     if (paramsId === userId) {
       return next(appError(401, "您無法追蹤自己", next));
     };
@@ -214,6 +239,17 @@ const users = {
       status: 'success',
       message: '您已經取消追蹤'
     });
+  },
+
+  // getFollowing
+  async getFollowing(req, res, next) {
+    const userId = req.user.id;
+    const user = await User.findById(userId).populate({
+      path: 'following.user',
+      select: 'name photo'
+    });
+    const followingList = user.following;
+    handleSuccess(res, 200, followingList);
   },
 
   //  deleteAll

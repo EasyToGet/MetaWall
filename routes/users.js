@@ -12,8 +12,6 @@ router.patch('/user/updatePassword', isAuth, handleErrorAsync(UserController.upd
 
 router.get('/user/profile', isAuth, handleErrorAsync(UserController.getUserProfile));
 
-router.get('/users', isAuth, handleErrorAsync(UserController.getAllUsers));
-
 router.patch('/user/profile', isAuth, handleErrorAsync(UserController.updateUserProfile));
 
 router.get('/users/getLikeList', isAuth, handleErrorAsync(UserController.getLikeList));
@@ -21,6 +19,10 @@ router.get('/users/getLikeList', isAuth, handleErrorAsync(UserController.getLike
 router.post('/users/:id/follow', isAuth, handleErrorAsync(UserController.addFollow));
 
 router.delete('/users/:id/unFollow', isAuth, handleErrorAsync(UserController.unFollow));
+
+router.get('/user/following', isAuth, handleErrorAsync(UserController.getFollowing));
+
+router.get('/users', isAuth, handleErrorAsync(UserController.getAllUsers));
 
 router.delete('/users', isAuth, handleErrorAsync(UserController.deleteAll));
 
