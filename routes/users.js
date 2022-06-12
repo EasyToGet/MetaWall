@@ -18,6 +18,10 @@ router.patch('/user/profile', isAuth, handleErrorAsync(UserController.updateUser
 
 router.get('/users/getLikeList', isAuth, handleErrorAsync(UserController.getLikeList));
 
+router.post('/users/:id/follow', isAuth, handleErrorAsync(UserController.addFollow));
+
+router.delete('/users/:id/unFollow', isAuth, handleErrorAsync(UserController.unFollow));
+
 router.delete('/users', isAuth, handleErrorAsync(UserController.deleteAll));
 
 router.delete('/user/:id', isAuth, handleErrorAsync(UserController.deleteSingle));

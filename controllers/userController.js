@@ -156,6 +156,66 @@ const users = {
     handleSuccess(res, 200, likeList);
   },
 
+  // addFollow
+  async addFollow(req, res, next) {
+    const paramsId = req.params.id;
+    const userId = req.user.id;
+    if (paramsId === userId) {
+      return next(appError(401, "您無法追蹤自己", next));
+    };
+    await User.updateOne(
+      {
+        _id: userId,
+        'following.user': { $ne: paramsId }
+      },
+      {
+        $addToSet: { following: { user: paramsId} }
+      }
+    );
+    await User.updateOne(
+      {
+        _id: paramsId,
+        'followers.user': { $ne: userId }
+      },
+      {
+        $addToSet: { followers: { user: userId } }
+      }
+    );
+    res.status(200).send({
+      status: 'success',
+      message: '您已經成功追蹤'
+    });
+  },
+
+  // unFollow
+  async unFollow(req, res, next) {
+    const paramsId = req.params.id;
+    const userId = req.user.id;
+    if (paramsId === userId) {
+      return next(appError(401, "您無法追蹤自己", next));
+    };
+    await User.updateOne(
+      {
+        _id: userId
+      },
+      {
+        $pull: { following: { user: paramsId } }
+      }
+    );
+    await User.updateOne(
+      {
+        _id: paramsId
+      },
+      {
+        $pull: { followers: { user: userId } }
+      }
+    );
+    res.status(200).send({
+      status: 'success',
+      message: '您已經取消追蹤'
+    });
+  },
+
   //  deleteAll
   async deleteAll(req, res, next) {
     //  取出 req 的 Url，再判斷是否等於 '/api/users/'
