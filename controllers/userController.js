@@ -163,7 +163,7 @@ const users = {
     const userId = req.user.id;
     //  檢查 User ID 格式
     if (!mongoose.isValidObjectId(paramsId)) {
-      return appError(400, "User ID 格式不正確", next);
+      return appError(400, "ID 格式不正確", next);
     };
 
     //  檢查 用戶是否存在  
@@ -208,7 +208,7 @@ const users = {
     const userId = req.user.id;
     //  檢查 User ID 格式
     if (!mongoose.isValidObjectId(paramsId)) {
-      return appError(400, "User ID 格式不正確", next);
+      return appError(400, "ID 格式不正確", next);
     };
 
     //  檢查 用戶是否存在  

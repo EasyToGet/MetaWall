@@ -28,7 +28,7 @@ const posts = {
     const id = req.params.id;
     //  檢查 Post ID 格式
     if (!mongoose.isValidObjectId(id)) {
-      return appError(400, "Post ID 格式不正確", next);
+      return appError(400, "ID 格式不正確", next);
     };
     const singlePost = await Post.find({
       _id: id
@@ -98,13 +98,13 @@ const posts = {
     const { comment } = req.body;
     //  檢查 Post ID 格式
     if (!mongoose.isValidObjectId(post)) {
-      return appError(400, "Post ID 格式不正確", next);
+      return appError(400, "ID 格式不正確", next);
     };
 
     //  檢查 Post ID  
     const findPostId = await Post.findById(post);
     if (findPostId === null) {
-      return next(appError(400, "無此 Post ID", next));
+      return next(appError(400, "查無此 ID", next));
     };
     const newComment = await Comment.create({
       post,
@@ -122,12 +122,12 @@ const posts = {
     const user = req.params.id;
     //  檢查 User ID 格式
     if (!mongoose.isValidObjectId(user)) {
-      return appError(400, "User ID 格式不正確", next);
+      return appError(400, "ID 格式不正確", next);
     };
     //  檢查 User ID  
     const findUserId = await User.findById(user);
     if (findUserId === null) {
-      return next(appError(400, "無此 User ID", next));
+      return next(appError(400, "查無此 ID", next));
     };
     const posts = await Post.find({ user }).populate({
       path: 'comments',
