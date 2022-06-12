@@ -15,6 +15,10 @@ router.post('/posts/:id/like', isAuth, handleErrorAsync(PostsControllers.addLike
 
 router.delete('/posts/:id/unlike', isAuth, handleErrorAsync(PostsControllers.unLike));
 
+router.post('/posts/:id/comment', isAuth, handleErrorAsync(PostsControllers.addComment));
+
+router.get('/post/user/:id', isAuth, handleErrorAsync(PostsControllers.getUserComment));
+
 router.delete('/posts', isAuth, handleErrorAsync(PostsControllers.deleteAll));
 
 router.delete('/post/:id', isAuth, handleErrorAsync(PostsControllers.deleteSingle));

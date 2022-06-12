@@ -1,7 +1,8 @@
+const mongoose = require('mongoose');
 const handleSuccess = require('../service/handleSuccess');
 const appError = require('../service/appError');
-const checkObjectId = require('../service/checkObjectId');
 const Post = require('../models/postModel');
+const Comment = require('../models/commentsModel');
 
 const posts = {
   //  getAllPosts
@@ -13,20 +14,30 @@ const posts = {
     const allPosts = await Post.find(q).populate({
       path: 'user',
       select: 'name photo'
-    }).sort(timeSort);
+    })
+      .populate({
+        path: 'comments',
+        select: 'comment user'
+      }).sort(timeSort);
     handleSuccess(res, 200, allPosts);
   },
 
   //  getPosts
   async getUserPost(req, res, next) {
     const id = req.params.id;
-    checkObjectId(id, next);
+    if (!mongoose.isValidObjectId(id)) {
+      return appError(400, "Post ID 格式不正確", next);
+    };
     const singlePost = await Post.find({
       _id: id
     }).populate({
       path: 'user',
       select: 'name photo'
-    });
+    })
+      .populate({
+        path: 'comments',
+        select: 'comment user'
+      });
     handleSuccess(res, 200, singlePost);
   },
 
@@ -76,6 +87,46 @@ const posts = {
       userId: userId
     }
     handleSuccess(res, 201, unLike);
+  },
+
+  //  addComment
+  async addComment(req, res, next) {
+    const user = req.user.id;
+    const post = req.params.id;
+    const { comment } = req.body;
+    //  檢查 Post ID 格式
+    if (!mongoose.isValidObjectId(post)) {
+      return appError(400, "Post ID 格式不正確", next);
+    };
+
+    //  檢查 Post ID  
+    const findPostId = await Post.findById(post);
+    if (findPostId === null) {
+      return next(appError(400, "留言文章不存在", next));
+    };
+    const newComment = await Comment.create({
+      post,
+      user,
+      comment
+    });
+    const addComments = {
+      comments: newComment
+    };
+    handleSuccess(res, 201, addComments);
+  },
+
+  //  getUserComment
+  async getUserComment(req, res, next) {
+    const userId = req.params.id;
+    const posts = await Post.find({ userId }).populate({
+      path: 'comments',
+      select: 'comment user'
+    });
+    req.status(200).send({
+      status: 'success',
+      results: posts.length,
+      posts
+    });
   },
 
   //  deleteAll
