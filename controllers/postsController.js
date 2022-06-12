@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const handleSuccess = require('../service/handleSuccess');
 const appError = require('../service/appError');
 const Post = require('../models/postModel');
+const User = require('../models/userModel');
 const Comment = require('../models/commentsModel');
 
 const posts = {
@@ -25,6 +26,7 @@ const posts = {
   //  getPosts
   async getUserPost(req, res, next) {
     const id = req.params.id;
+    //  檢查 Post ID 格式
     if (!mongoose.isValidObjectId(id)) {
       return appError(400, "Post ID 格式不正確", next);
     };
@@ -102,7 +104,7 @@ const posts = {
     //  檢查 Post ID  
     const findPostId = await Post.findById(post);
     if (findPostId === null) {
-      return next(appError(400, "留言文章不存在", next));
+      return next(appError(400, "無此 Post ID", next));
     };
     const newComment = await Comment.create({
       post,
@@ -117,12 +119,21 @@ const posts = {
 
   //  getUserComment
   async getUserComment(req, res, next) {
-    const userId = req.params.id;
-    const posts = await Post.find({ userId }).populate({
+    const user = req.params.id;
+    //  檢查 User ID 格式
+    if (!mongoose.isValidObjectId(user)) {
+      return appError(400, "User ID 格式不正確", next);
+    };
+    //  檢查 User ID  
+    const findUserId = await User.findById(user);
+    if (findUserId === null) {
+      return next(appError(400, "無此 User ID", next));
+    };
+    const posts = await Post.find({ user }).populate({
       path: 'comments',
       select: 'comment user'
     });
-    req.status(200).send({
+    res.status(200).send({
       status: 'success',
       results: posts.length,
       posts
